@@ -18,11 +18,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ProcessComponent } from './process/process.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductNameDialog,
+    ProcessComponent,
   ],
   imports: [
     BrowserModule,

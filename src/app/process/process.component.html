@@ -1,0 +1,55 @@
+{{productId}}
+
+<div style="display: flex;">
+    <mat-vertical-stepper style="flex-grow: 2;" [linear]="false" #stepper>
+      <mat-step>
+        <ng-template matStepLabel>Setup source and import data.</ng-template>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Configure product.</ng-template>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Import data from source.</ng-template>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Clean-up, analyze and produce insight.</ng-template>
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Review output data.</ng-template>
+
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Publish data.</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+
+    <div style="width: 30em; flex-grow: 0;">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Shiba Inu</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+            bred for hunting.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>HISTORY</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+  </div>
