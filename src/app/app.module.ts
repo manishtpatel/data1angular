@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgModule } from '@angular/core';
 
@@ -18,7 +18,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { ProcessComponent } from './process/process.component';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +43,9 @@ import { ProcessComponent } from './process/process.component';
     HttpClientModule,
     MatDialogModule,
     FormsModule,
+    ReactiveFormsModule,
     MatInputModule,
+    MatCheckboxModule,
   ],
   entryComponents: [
     ProductNameDialog

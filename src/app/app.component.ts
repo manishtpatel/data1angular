@@ -22,6 +22,8 @@ export class AppComponent {
 
   async ngOnInit() {
     this.products = await this._http.get('http://localhost:3000/getproducts').toPromise()
+    // TODO: remove this
+    // this.selectedProduct = this.products[0]
   }
 
   onClick_Add = async () => {
