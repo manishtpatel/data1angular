@@ -15,7 +15,7 @@
                         <mat-checkbox formControlName="testcsv3">Test-data3.csv</mat-checkbox>
                     </ol>
                 </ul>
-                <button mat-button>Import</button>
+                <button mat-button (click)="onClick_step1_import()">Import</button>
                 <button [disabled]="!firstFormGroup.valid" mat-button matStepperNext>Continue</button>
                 <div style="height: 1em;">
                     <mat-progress-bar mode="buffer"></mat-progress-bar>
