@@ -3,7 +3,7 @@
   <div>
     <mat-form-field style="width: 30em;">
       <mat-label>Select Product</mat-label>
-      <mat-select [(value)]="selectedProduct" (selectionChange)="onSelectionChanged_Product()">
+      <mat-select [(value)]="selectedProductId" (selectionChange)="onSelectionChanged_Product()">
         <mat-option>None</mat-option>
         <mat-option *ngFor="let product of products" [value]="product._id">
           {{product.name}}
@@ -16,8 +16,8 @@
 </div>
 <br />
 
-<div *ngIf="selectedProduct != null">
-  <app-process [productId]="selectedProduct"></app-process>
+<div *ngIf="selectedProductId != null">
+  <app-process [product]="selectedProduct"></app-process>
 </div>
 
 <router-outlet></router-outlet>

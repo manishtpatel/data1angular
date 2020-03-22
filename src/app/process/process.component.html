@@ -1,3 +1,5 @@
+{{product.state}}
+
 <div style="display: flex;">
     <mat-vertical-stepper style="flex-grow: 2;" [linear]="true" #stepper>
         <mat-step [stepControl]="firstFormGroup">
@@ -15,15 +17,16 @@
                         <mat-checkbox formControlName="testcsv3">Test-data3.csv</mat-checkbox>
                     </ol>
                 </ul>
-                <button mat-button (click)="onClick_step1_import()">Import</button>
-                <button [disabled]="!firstFormGroup.valid" mat-button matStepperNext>Continue</button>
+                <button [disabled]="!firstFormGroup.valid || product.state > 1" mat-button (click)="onClick_step1_import()">Import</button>
+                <!-- <button [disabled]="product.state < 2" mat-button matStepperNext>Continue</button> -->
                 <div style="height: 1em;">
-                    <mat-progress-bar mode="buffer"></mat-progress-bar>
+                    <mat-progress-bar *ngIf="product.state == 1.1" mode="buffer"></mat-progress-bar>
                 </div>
             </form>
         </mat-step>
-        <mat-step>
+        <mat-step [stepControl]="secondFormGroup">
             <ng-template matStepLabel>Configure product.</ng-template>
+            <button [disabled]="!secondFormGroup.valid && product.state == 1" mat-button matStepperNext>Continue</button>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Import data from source.</ng-template>

@@ -18,12 +18,11 @@ export class AppComponent {
 
   title = 'gstweb';
   products;
+  selectedProductId;
   selectedProduct;
 
   async ngOnInit() {
     this.products = await this._http.get('http://localhost:3000/getproducts').toPromise()
-    // TODO: remove this
-    // this.selectedProduct = this.products[0]
   }
 
   onClick_Add = async () => {
@@ -40,13 +39,22 @@ export class AppComponent {
         this.products = await this._http.get('http://localhost:3000/getproducts').toPromise()
 
         this._snackBar.open(`${result} has been created.`, null, { duration: 2000 });
-        this.selectedProduct = this.products[0]._id
+        this.selectedProductId = this.products[0]._id
+
+        await this.onSelectionChanged_Product()
       }
     });
   }
 
   onSelectionChanged_Product = async () => {
-    console.log(this.selectedProduct)
+    for (let index = 0; index < this.products.length; index++) {
+      const element = this.products[index];
+
+      if(element._id == this.selectedProductId){
+        this.selectedProduct = element
+        break;
+      }
+    }
   }
 }
 
