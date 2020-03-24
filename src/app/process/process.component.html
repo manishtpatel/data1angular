@@ -13,7 +13,7 @@
                         <mat-checkbox formControlName="testcsv2">Market.csv</mat-checkbox>
                     </ol>
                 </ul>
-                <button mat-stroked-button [disabled]="!firstFormGroup.valid" mat-button
+                <button mat-stroked-button [disabled]="!firstFormGroup.valid || product.state == 1.1" mat-button
                     (click)="onClick_step1_import()">Import</button>
                 <br />
                 <br />
@@ -34,7 +34,7 @@
                     </mat-select>
                 </mat-form-field>
                 <br />
-                <button mat-stroked-button [disabled]="!secondFormGroup.valid" mat-button
+                <button mat-stroked-button [disabled]="!secondFormGroup.valid" mat-button [disabled]="product.state == 2.1"
                     (click)="onClick_step2_done(2.1)">Create</button>
                 <br />
                 <br />
@@ -46,7 +46,7 @@
         <mat-step>
             <ng-template matStepLabel>Clean-up, analyze and produce insight.</ng-template>
             <p>Lets run Job Match, Valuation and Stats job.</p>
-            <button mat-stroked-button mat-button (click)="onClick_step2_done(3.1)">Run
+            <button mat-stroked-button mat-button [disabled]="product.state == 3.1" (click)="onClick_step2_done(3.1)">Run
                 Stats</button>
             <br />
             <br />
@@ -60,8 +60,8 @@
             <a target="_blank" href="http://localhost:3000/public/train.csv">Download Data File</a>
             <br />
             <br />
-            <button mat-stroked-button mat-button (click)="onClick_step2_done(4.1)">Approve</button> &nbsp; 
-            <button mat-stroked-button mat-button matStepperPrevious>Re-run Stats</button>
+            <button mat-stroked-button mat-button [disabled]="product.state == 4.1" (click)="onClick_step2_done(4.1)">Approve</button> &nbsp; 
+            <button mat-stroked-button mat-button [disabled]="product.state == 4.1" matStepperPrevious>Re-run Stats</button>
             <br />
             <br />
             <div style="height: 0.1em;">
@@ -71,7 +71,7 @@
         <mat-step>
             <ng-template matStepLabel>Publish product.</ng-template>
             <p>Publish the product when ready.</p>
-            <button mat-stroked-button mat-button (click)="onClick_step2_done(5.1)">Publish</button>
+            <button mat-stroked-button mat-button [disabled]="product.state == 5.1" (click)="onClick_step2_done(5.1)">Publish</button>
             <br />
             <br />
             <div style="height: 0.1em;">

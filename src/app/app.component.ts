@@ -23,6 +23,10 @@ export class AppComponent {
 
   async ngOnInit() {
     this.products = await this._http.get(environment.webServer + '/getproducts').toPromise()
+
+    setInterval(() => {
+      this._http.get(environment.webServer + '/getproducts').subscribe(x => this.products = x)
+    }, 10000);
   }
 
   onClick_Add = async () => {
