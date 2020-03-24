@@ -2,6 +2,8 @@ import { Component, OnInit, Input, NgZone, ViewChild, OnChanges, AfterViewInit }
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatStepper } from '@angular/material/stepper'
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from './../../environments/environment';
 
 @Component({
   selector: 'app-process',
@@ -22,6 +24,7 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(
     private zone: NgZone,
+    private _snackBar: MatSnackBar,
     private _formBuilder: FormBuilder,
     private _http: HttpClient,
   ) { }
@@ -54,15 +57,10 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
     this.secondFormGroup = this._formBuilder.group({
       selectedSaleConditions: new FormControl(null)
     });
-
-    // this.interval = setInterval(() => {
-    //   this.refreshData();
-    // }, 5000);
-
   }
 
   refreshData() {
-    this._http.get(`http://localhost:3000/getproduct/${this.product._id}`).subscribe(value => {
+    this._http.get(`${environment.webServer}/getproduct/${this.product._id}`).subscribe(value => {
       this.zone.run(() => {
         const isStateChanged = (value[0].state != this.product.state)
         this.product = value[0]
@@ -110,28 +108,35 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
     this.product.state = 1.1
     this.onUpdatedProduct(true)
 
-    await this._http.post(`http://localhost:3000/updatestatus/`, {
+    await this._http.post(environment.webServer + `/updatestatus/`, {
       productId: this.product._id,
       state: 1.1,
     }).toPromise()
 
-    let response2 = await this._http.post('http://localhost:3000/proxy/api/experimental/dags/import_data/dag_runs', {
+    let response2 = await this._http.post(environment.webServer + '/proxy/api/experimental/dags/import_data/dag_runs', {
       'conf': {
         'productId': this.product._id
       },
       'run_id': 'import_data' + Date.now()
     }).toPromise()
 
-    await this._http.get('http://localhost:3000/proxy/api/experimental/dags/import_data/dag_runs/' + response2['execution_date']).toPromise()
+    await this._http.get(environment.webServer + '/proxy/api/experimental/dags/import_data/dag_runs/' + response2['execution_date']).toPromise()
   }
 
   onClick_step2_done(state: number) {
     // intermittent for ui to reflect progress bar
     this.product.state = state
+    this.onUpdatedProduct(true)
 
-    this._http.post(`http://localhost:3000/updatestatus/`, {
+
+    this._http.post(environment.webServer + `/updatestatus/`, {
       productId: this.product._id,
       state: Math.ceil(state),
     }).subscribe()
   }
+
+  onClick_history(message: string){
+    this._snackBar.open(message, null, { duration: 4000 });
+  }
+
 }

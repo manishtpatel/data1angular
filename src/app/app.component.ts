@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import { environment } from './../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent {
   selectedProduct;
 
   async ngOnInit() {
-    this.products = await this._http.get('http://localhost:3000/getproducts').toPromise()
+    this.products = await this._http.get(environment.webServer + '/getproducts').toPromise()
   }
 
   onClick_Add = async () => {
@@ -35,8 +35,8 @@ export class AppComponent {
       console.log('The dialog was closed', result);
 
       if (result) {
-        await this._http.post('http://localhost:3000/addproduct', { name: result }).toPromise()
-        this.products = await this._http.get('http://localhost:3000/getproducts').toPromise()
+        await this._http.post(environment.webServer + '/addproduct', { name: result }).toPromise()
+        this.products = await this._http.get(environment.webServer + '/getproducts').toPromise()
 
         this._snackBar.open(`${result} has been created.`, null, { duration: 2000 });
         this.selectedProductId = this.products[0]._id
@@ -50,7 +50,7 @@ export class AppComponent {
     for (let index = 0; index < this.products.length; index++) {
       const element = this.products[index];
 
-      if(element._id == this.selectedProductId){
+      if (element._id == this.selectedProductId) {
         this.selectedProduct = element
         break;
       }

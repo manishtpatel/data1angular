@@ -1,4 +1,3 @@
-{{this.product.state}}
 <div style="display: flex;">
     <mat-vertical-stepper style="flex-grow: 2;" [linear]="true" #stepper>
         <mat-step [stepControl]="step1FormControl">
@@ -14,11 +13,11 @@
                         <mat-checkbox formControlName="testcsv2">Market.csv</mat-checkbox>
                     </ol>
                 </ul>
-                <!-- <button [disabled]="!firstFormGroup.valid || product.state > 1" mat-button
-                    (click)="onClick_step1_import()">Import</button> -->
                 <button mat-stroked-button [disabled]="!firstFormGroup.valid" mat-button
                     (click)="onClick_step1_import()">Import</button>
-                <div style="height: 1em;">
+                <br />
+                <br />
+                <div style="height: 0.1em;">
                     <mat-progress-bar *ngIf="product.state == 1.1" mode="buffer"></mat-progress-bar>
                 </div>
             </form>
@@ -37,26 +36,51 @@
                 <br />
                 <button mat-stroked-button [disabled]="!secondFormGroup.valid" mat-button
                     (click)="onClick_step2_done(2.1)">Create</button>
-                <div style="height: 1em;">
+                <br />
+                <br />
+                <div style="height: 0.1em;">
                     <mat-progress-bar *ngIf="product.state == 2.1" mode="buffer"></mat-progress-bar>
                 </div>
             </form>
         </mat-step>
-        <mat-step [stepControl]="step3FormControl">
+        <mat-step>
             <ng-template matStepLabel>Clean-up, analyze and produce insight.</ng-template>
             <p>Lets run Job Match, Valuation and Stats job.</p>
-            <button [disabled]="!step3FormControl.valid" mat-button (click)="onClick_step2_done(3.1)">Run
+            <button mat-stroked-button mat-button (click)="onClick_step2_done(3.1)">Run
                 Stats</button>
+            <br />
+            <br />
+            <div style="height: 0.1em;">
+                <mat-progress-bar *ngIf="product.state == 3.1" mode="buffer"></mat-progress-bar>
+            </div>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Review output data.</ng-template>
-            <button mat-button matStepperNext>Continue</button>
-        </mat-step>
-        <mat-step [stepControl]="step4FormControl">
-            <ng-template matStepLabel>Publish data.</ng-template>
-            <p>You are now done.</p>
-            <div>
+            <p>Here we link with spotfire/excel etc. to allow review of the output.</p>
+            <a target="_blank" href="http://localhost:3000/public/train.csv">Download Data File</a>
+            <br />
+            <br />
+            <button mat-stroked-button mat-button (click)="onClick_step2_done(4.1)">Approve</button> &nbsp; 
+            <button mat-stroked-button mat-button matStepperPrevious>Re-run Stats</button>
+            <br />
+            <br />
+            <div style="height: 0.1em;">
+                <mat-progress-bar *ngIf="product.state == 4.1" mode="buffer"></mat-progress-bar>
             </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Publish product.</ng-template>
+            <p>Publish the product when ready.</p>
+            <button mat-stroked-button mat-button (click)="onClick_step2_done(5.1)">Publish</button>
+            <br />
+            <br />
+            <div style="height: 0.1em;">
+                <mat-progress-bar *ngIf="product.state == 5.1" mode="buffer"></mat-progress-bar>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>All done.</ng-template>
+            <p>Congrats, your product is successfully published.</p>
         </mat-step>
     </mat-vertical-stepper>
 
@@ -101,10 +125,11 @@
                     </ul>
                 </div>
             </mat-card-content>
-            <img *ngIf="product.state >= 4" mat-card-image src="http://localhost:3000/public/plot_basic.png" alt="Photo of a Shiba Inu">
+            <img *ngIf="product.state >= 4" mat-card-image src="http://localhost:3000/public/plot_basic.png"
+                alt="Photo of a Shiba Inu">
             <mat-card-actions>
-                <button mat-button>HISTORY</button>
-                <button mat-button>NOTES</button>
+                <button mat-button (click)="onClick_history('Will display process history with data changes.')" >HISTORY</button>
+                <button mat-button (click)="onClick_history('Will provide provision to add and update notes.')">NOTES</button>
             </mat-card-actions>
         </mat-card>
     </div>
