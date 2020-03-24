@@ -1,51 +1,61 @@
-{{product.state}}
-
+{{this.product.state}}
 <div style="display: flex;">
     <mat-vertical-stepper style="flex-grow: 2;" [linear]="true" #stepper>
-        <mat-step [stepControl]="firstFormGroup">
+        <mat-step [stepControl]="step1FormControl">
             <form [formGroup]="firstFormGroup">
-                <ng-template matStepLabel>Setup source and import data.</ng-template>
+                <ng-template matStepLabel>Setup source and import data. (Link with MDC and other apps here)
+                </ng-template>
                 <p>Selecting sample CSV data source.</p>
                 <ul>
                     <ol>
-                        <mat-checkbox formControlName="testcsv1" required>Test-data1.csv</mat-checkbox>
+                        <mat-checkbox formControlName="testcsv1" required>Sales.csv</mat-checkbox>
                     </ol>
                     <ol>
-                        <mat-checkbox formControlName="testcsv2">Test-data2.csv</mat-checkbox>
-                    </ol>
-                    <ol>
-                        <mat-checkbox formControlName="testcsv3">Test-data3.csv</mat-checkbox>
+                        <mat-checkbox formControlName="testcsv2">Market.csv</mat-checkbox>
                     </ol>
                 </ul>
-                <button [disabled]="!firstFormGroup.valid || product.state > 1" mat-button (click)="onClick_step1_import()">Import</button>
-                <!-- <button [disabled]="product.state < 2" mat-button matStepperNext>Continue</button> -->
+                <!-- <button [disabled]="!firstFormGroup.valid || product.state > 1" mat-button
+                    (click)="onClick_step1_import()">Import</button> -->
+                <button mat-stroked-button [disabled]="!firstFormGroup.valid" mat-button
+                    (click)="onClick_step1_import()">Import</button>
                 <div style="height: 1em;">
                     <mat-progress-bar *ngIf="product.state == 1.1" mode="buffer"></mat-progress-bar>
                 </div>
             </form>
         </mat-step>
-        <mat-step [stepControl]="secondFormGroup">
-            <ng-template matStepLabel>Configure product.</ng-template>
-            <button [disabled]="!secondFormGroup.valid && product.state == 1" mat-button matStepperNext>Continue</button>
+        <mat-step [stepControl]="step2FormControl">
+            <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Configure product.</ng-template>
+                <p>Select filter criteria for the product.</p>
+                <mat-form-field>
+                    <mat-label>Select Filter Criteria</mat-label>
+                    <mat-select formControlName="selectedSaleConditions" multiple>
+                        <mat-option *ngFor="let value of product.SaleCondition" [value]="value">
+                            {{value}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br />
+                <button mat-stroked-button [disabled]="!secondFormGroup.valid" mat-button matStepperNext
+                    (click)="onClick_step2_done(2.1)">Create</button>
+                <div style="height: 1em;">
+                    <mat-progress-bar *ngIf="product.state == 2.1" mode="buffer"></mat-progress-bar>
+                </div>
+            </form>
         </mat-step>
-        <mat-step>
-            <ng-template matStepLabel>Import data from source.</ng-template>
-            <mat-progress-bar mode="buffer"></mat-progress-bar>
-        </mat-step>
-        <mat-step>
+        <mat-step [stepControl]="step3FormControl">
             <ng-template matStepLabel>Clean-up, analyze and produce insight.</ng-template>
-            <mat-progress-bar mode="buffer"></mat-progress-bar>
+            <p>Lets run Job Match, Valuation and Stats job.</p>
+            <button [disabled]="!step3FormControl.valid" mat-button matStepperNext (click)="onClick_step2_done(3.1)">Run
+                Stats</button>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Review output data.</ng-template>
-
+            <button mat-button matStepperNext>Continue</button>
         </mat-step>
-        <mat-step>
+        <mat-step [stepControl]="step4FormControl">
             <ng-template matStepLabel>Publish data.</ng-template>
             <p>You are now done.</p>
             <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button (click)="stepper.reset()">Reset</button>
             </div>
         </mat-step>
     </mat-vertical-stepper>
@@ -53,22 +63,31 @@
     <div style="width: 30em; flex-grow: 0;">
         <mat-card class="example-card">
             <mat-card-header>
-                <div mat-card-avatar class="example-header-image"></div>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+                <!-- <div mat-card-avatar class="example-header-image"></div> -->
+                <mat-card-title>{{product.name}}</mat-card-title>
+                <mat-card-subtitle>Product created on {{product.timestamp | date: 'yyyy-MM-dd'}}</mat-card-subtitle>
             </mat-card-header>
-            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-                alt="Photo of a Shiba Inu">
             <mat-card-content>
                 <p>
-                    The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                    A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                    bred for hunting.
+                    Product lifecycle poc using airflow, angular, pandas and nodejs.
                 </p>
+                <h2>Product Data State</h2>
+                <mat-chip-list>
+                    <mat-chip color="primary" [selected]="product.state >= 2">Setup</mat-chip>
+                    <mat-chip color="primary" [selected]="product.state >= 3">Define Product</mat-chip>
+                    <mat-chip color="primary" [selected]="product.state >= 4">Job Match
+                    </mat-chip>
+                    <mat-chip color="primary" [selected]="product.state >= 4">Valuation
+                    </mat-chip>
+                    <mat-chip color="primary" [selected]="product.state >= 4">Stats</mat-chip>
+                    <mat-chip color="primary" [selected]="product.state >= 5">Review</mat-chip>
+                    <mat-chip color="primary" [selected]="product.state >= 6">Published</mat-chip>
+                </mat-chip-list>
             </mat-card-content>
+            <img mat-card-image src="http://localhost:3000/public/plot_basic.png" alt="Photo of a Shiba Inu">
             <mat-card-actions>
                 <button mat-button>HISTORY</button>
-                <button mat-button>SHARE</button>
+                <button mat-button>NOTES</button>
             </mat-card-actions>
         </mat-card>
     </div>
