@@ -35,7 +35,7 @@
                     </mat-select>
                 </mat-form-field>
                 <br />
-                <button mat-stroked-button [disabled]="!secondFormGroup.valid" mat-button matStepperNext
+                <button mat-stroked-button [disabled]="!secondFormGroup.valid" mat-button
                     (click)="onClick_step2_done(2.1)">Create</button>
                 <div style="height: 1em;">
                     <mat-progress-bar *ngIf="product.state == 2.1" mode="buffer"></mat-progress-bar>
@@ -45,7 +45,7 @@
         <mat-step [stepControl]="step3FormControl">
             <ng-template matStepLabel>Clean-up, analyze and produce insight.</ng-template>
             <p>Lets run Job Match, Valuation and Stats job.</p>
-            <button [disabled]="!step3FormControl.valid" mat-button matStepperNext (click)="onClick_step2_done(3.1)">Run
+            <button [disabled]="!step3FormControl.valid" mat-button (click)="onClick_step2_done(3.1)">Run
                 Stats</button>
         </mat-step>
         <mat-step>
@@ -71,8 +71,8 @@
                 <p>
                     Product lifecycle poc using airflow, angular, pandas and nodejs.
                 </p>
-                <h2>Product Data State</h2>
-                <mat-chip-list>
+                <h3>Product Data State</h3>
+                <mat-chip-list multiple="true">
                     <mat-chip color="primary" [selected]="product.state >= 2">Setup</mat-chip>
                     <mat-chip color="primary" [selected]="product.state >= 3">Define Product</mat-chip>
                     <mat-chip color="primary" [selected]="product.state >= 4">Job Match
@@ -83,8 +83,25 @@
                     <mat-chip color="primary" [selected]="product.state >= 5">Review</mat-chip>
                     <mat-chip color="primary" [selected]="product.state >= 6">Published</mat-chip>
                 </mat-chip-list>
+                <div *ngIf="product.state >= 2">
+                    <br />
+                    <mat-divider></mat-divider>
+                    <br />
+                    <h3>Data Statistics</h3>
+                    <ul>
+                        <li>
+                            Imported 107,032 rows of data. Total size 127mb.
+                        </li>
+                        <li *ngIf="product.state >= 3">
+                            Product has 3 filter criteria with 78,003 rows of data.
+                        </li>
+                        <li *ngIf="product.state >= 4">
+                            23,303 rows cleaned, 32 rows removed.
+                        </li>
+                    </ul>
+                </div>
             </mat-card-content>
-            <img mat-card-image src="http://localhost:3000/public/plot_basic.png" alt="Photo of a Shiba Inu">
+            <img *ngIf="product.state >= 4" mat-card-image src="http://localhost:3000/public/plot_basic.png" alt="Photo of a Shiba Inu">
             <mat-card-actions>
                 <button mat-button>HISTORY</button>
                 <button mat-button>NOTES</button>

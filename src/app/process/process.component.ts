@@ -27,11 +27,11 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
-    // this.onUpdatedProduct(true);
+    this.onUpdatedProduct(true);
 
-    // this.interval = setInterval(() => {
-    //   this.refreshData();
-    // }, 5000);
+    this.interval = setInterval(() => {
+      this.refreshData();
+    }, 5000);
   }
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
@@ -52,12 +52,13 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
     });
 
     this.secondFormGroup = this._formBuilder.group({
-      selectedSaleConditions: new FormControl(null, Validators.required)
+      selectedSaleConditions: new FormControl(null)
     });
 
-        this.interval = setInterval(() => {
-      this.refreshData();
-    }, 5000);
+    // this.interval = setInterval(() => {
+    //   this.refreshData();
+    // }, 5000);
+
   }
 
   refreshData() {
@@ -91,6 +92,14 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
           }
         })
       }
+      for (let index = Math.floor(this.product.state) - 1; index <  5; index++) {
+        this.myStepper.steps.forEach((item, iindex, steps) => {
+          if (iindex == index) {
+            item.completed = false;
+            item.interacted = false;
+          }
+        })
+      }
 
       this.myStepper.selectedIndex = Math.floor(this.product.state) - 1
     }
@@ -99,6 +108,7 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
   async onClick_step1_import() {
     // intermittent for ui to reflect progress bar
     this.product.state = 1.1
+    this.onUpdatedProduct(true)
 
     await this._http.post(`http://localhost:3000/updatestatus/`, {
       productId: this.product._id,
@@ -115,18 +125,13 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
     await this._http.get('http://localhost:3000/proxy/api/experimental/dags/import_data/dag_runs/' + response2['execution_date']).toPromise()
   }
 
-  async onClick_step2_done(state: number) {
+  onClick_step2_done(state: number) {
     // intermittent for ui to reflect progress bar
     this.product.state = state
 
-    await this._http.post(`http://localhost:3000/updatestatus/`, {
+    this._http.post(`http://localhost:3000/updatestatus/`, {
       productId: this.product._id,
       state: Math.ceil(state),
-    }).toPromise()
-  }
-
-  getColor(isState: number){
-    if(this.product.state >= isState) return "primary"
-    else return ""
+    }).subscribe()
   }
 }
