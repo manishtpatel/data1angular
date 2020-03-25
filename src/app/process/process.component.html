@@ -57,7 +57,7 @@
         <mat-step>
             <ng-template matStepLabel>Review output data.</ng-template>
             <p>Here we link with spotfire/excel etc. to allow review of the output.</p>
-            <a target="_blank" href="http://localhost:3000/public/train.csv">Download Data File</a>
+            <a target="_blank" href="{{serverUrl}}/public/train.csv">Download Data File</a>
             <br />
             <br />
             <button mat-stroked-button mat-button [disabled]="product.state == 4.1" (click)="onClick_step2_done(4.1)">Approve</button> &nbsp; 

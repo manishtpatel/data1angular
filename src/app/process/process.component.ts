@@ -18,6 +18,7 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
   step4FormControl: FormControl;
   secondFormGroup: FormGroup;
   interval: any;
+  serverUrl: string;
 
   @Input() product
   @ViewChild('stepper') myStepper: MatStepper;
@@ -27,7 +28,9 @@ export class ProcessComponent implements OnInit, OnChanges, AfterViewInit {
     private _snackBar: MatSnackBar,
     private _formBuilder: FormBuilder,
     private _http: HttpClient,
-  ) { }
+  ) { 
+    this.serverUrl = environment.webServer
+  }
 
   ngAfterViewInit(): void {
     this.onUpdatedProduct(true);
