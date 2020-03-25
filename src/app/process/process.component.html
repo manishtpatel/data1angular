@@ -125,7 +125,7 @@
                     </ul>
                 </div>
             </mat-card-content>
-            <img *ngIf="product.state >= 4" mat-card-image src="http://localhost:3000/public/plot_basic.png"
+            <img *ngIf="product.state >= 4" mat-card-image src="{{serverUrl}}/public/plot_basic.png"
                 alt="Photo of a Shiba Inu">
             <mat-card-actions>
                 <button mat-button (click)="onClick_history('Display process history with data changes.')" >HISTORY</button>
